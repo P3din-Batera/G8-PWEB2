@@ -14,5 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="lib" path="C:/Users/Família Silva/Downloads/Grupo_08/h2/bin/h2-2.4.240.jar"/>
+	<classpathentry kind="lib" path="C:/Users/Família Silva/Downloads/Grupo_08/jstl-1.2.jar"/>
 	<classpathentry kind="output" path="build/classes"/>
 </classpath>
