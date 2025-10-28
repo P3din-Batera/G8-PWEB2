@@ -37,38 +37,62 @@
 <div class="modal fade" id="slaModal" tabindex="-1">
   <div class="modal-dialog">
     <div class="modal-content">
-      <form id="slaForm">
-        <div class="modal-header"><h5 class="modal-title">SLA</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div>
-        <div class="modal-body">
-          <input type="hidden" name="id" id="sla_id">
-          <div class="mb-3"><label>Tempo Resposta (h)</label><input type="number" name="tempoResposta" id="tempoResposta" class="form-control" required></div>
-          <div class="mb-3"><label>Tempo Solução (h)</label><input type="number" name="tempoSolucao" id="tempoSolucao" class="form-control" required></div>
-          <div class="mb-3"><label>Prioridade</label><input name="prioridade" id="prioridade" class="form-control"></div>
-          <div class="mb-3"><label>Criticidade</label><input name="criticidade" id="criticidade" class="form-control"></div>
+     <form id="slaForm" method="post" action="${pageContext.request.contextPath}/sla">
+    <div class="modal-header">
+        <h5 class="modal-title">SLA</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+    </div>
 
-          <div class="mb-3"><label>Responsável</label>
-            <select id="idResponsavel" name="idResponsavel" class="form-select">
-              <option value="">-- nenhum --</option>
-              <c:forEach var="r" items="${responsaveis}">
-                <option value="${r.id}">${r.nome}</option>
-              </c:forEach>
-            </select>
-          </div>
-          <div class="mb-3"><label>Tipo de Serviço</label>
-            <select id="idTipoServico" name="idTipoServico" class="form-select">
-              <option value="">-- nenhum --</option>
-              <c:forEach var="t" items="${tipos}">
-                <option value="${t.id}">${t.nome}</option>
-              </c:forEach>
-            </select>
-          </div>
+    <div class="modal-body">
+        <input type="hidden" name="id" id="sla_id">
 
+        <div class="mb-3">
+            <label>Tempo Resposta (h)</label>
+            <input type="number" name="tempoResposta" id="tempoResposta" class="form-control" required>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Salvar</button>
+
+        <div class="mb-3">
+            <label>Tempo Solução (h)</label>
+            <input type="number" name="tempoSolucao" id="tempoSolucao" class="form-control" required>
         </div>
-      </form>
+
+        <div class="mb-3">
+            <label>Prioridade</label>
+            <input type="text" name="prioridade" id="prioridade" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Criticidade</label>
+            <input type="text" name="criticidade" id="criticidade" class="form-control">
+        </div>
+
+        <div class="mb-3">
+            <label>Responsável</label>
+            <select name="idResponsavel" id="idResponsavel" class="form-select">
+                <option value="">-- nenhum --</option>
+                <c:forEach var="r" items="${responsaveis}">
+                    <option value="${r.id}">${r.nome}</option>
+                </c:forEach>
+            </select>
+        </div>
+
+        <div class="mb-3">
+            <label>Tipo de Serviço</label>
+            <select name="idTipoServico" id="idTipoServico" class="form-select">
+                <option value="">-- nenhum --</option>
+                <c:forEach var="t" items="${tipos}">
+                    <option value="${t.id}">${t.nome}</option>
+                </c:forEach>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </div>
+</form>
+
     </div>
   </div>
 </div>

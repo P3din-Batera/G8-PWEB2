@@ -109,26 +109,35 @@ public class SLARepository {
 
     public List<SLA> findAll() throws SQLException {
         List<SLA> list = new ArrayList<>();
+
         String sql = """
-            SELECT s.id_sla, s.tempo_resposta, s.tempo_solucao, s.criticidade, s.prioridade,
-                   r.nome AS nome_responsavel, t.nome AS nome_tipo
+            SELECT 
+                s.id_sla,
+                s.tempo_resposta,
+                s.tempo_solucao,
+                s.prioridade,
+                s.criticidade,
+                r.nome AS nome_responsavel,
+                t.nome AS nome_tipo
             FROM sla s
             LEFT JOIN sla_responsavel sr ON s.id_sla = sr.id_sla
             LEFT JOIN responsavel r ON sr.id_responsavel = r.id_responsavel
             LEFT JOIN sla_tipo_servico st ON s.id_sla = st.id_sla
             LEFT JOIN tipo_servico t ON st.id_servico = t.id_servico
-            ORDER BY s.id_sla DESC
+            ORDER BY s.id_sla;
         """;
-        try (Connection c = DBConnection.getConnection();
-             PreparedStatement ps = c.prepareStatement(sql);
+
+        try (Connection conn = DBConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql);
              ResultSet rs = ps.executeQuery()) {
+
             while (rs.next()) {
                 SLA s = new SLA();
                 s.setId(rs.getInt("id_sla"));
                 s.setTempoResposta(rs.getInt("tempo_resposta"));
                 s.setTempoSolucao(rs.getInt("tempo_solucao"));
-                s.setCriticidade(rs.getString("criticidade"));
                 s.setPrioridade(rs.getString("prioridade"));
+                s.setCriticidade(rs.getString("criticidade"));
                 s.setNomeResponsavel(rs.getString("nome_responsavel"));
                 s.setNomeTipo(rs.getString("nome_tipo"));
                 list.add(s);

@@ -2,7 +2,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
   const ctx = '${pageContext.request.contextPath}';
-  // abrir modal (formulário SLA)
+  // abrir modal (formulÃ¡rio SLA)
   function openSLAForm(data) {
     const modal = new bootstrap.Modal(document.getElementById('slaModal'));
     if (data) {
@@ -35,7 +35,7 @@
             prioridade: s.prioridade,
             criticidade: s.criticidade
           });
-        } else alert('SLA não encontrado');
+        } else alert('SLA nÃ£o encontrado');
       });
     } else if (e.target.matches('.btn-delete') || e.target.closest('.btn-delete')) {
       const id = e.target.closest('.btn-delete').dataset.id;
@@ -58,6 +58,8 @@
         .then(()=> location.reload())
         .catch(err => alert('Erro: ' + err));
     }
+    
+    
   });
 </script>
 </body>

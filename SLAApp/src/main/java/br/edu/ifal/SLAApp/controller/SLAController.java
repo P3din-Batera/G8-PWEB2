@@ -57,6 +57,7 @@ public class SLAController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             String action = req.getParameter("action");
+
             if ("delete".equals(action)) {
                 int id = Integer.parseInt(req.getParameter("id"));
                 repo.delete(id);
@@ -64,24 +65,48 @@ public class SLAController extends HttpServlet {
                 resp.getWriter().print("{\"status\":\"ok\"}");
                 return;
             }
-            // insert/update
+
+            // ===== INSERIR / ATUALIZAR =====
             String sid = req.getParameter("id");
             SLA s = new SLA();
             s.setTempoResposta(Integer.parseInt(req.getParameter("tempoResposta")));
             s.setTempoSolucao(Integer.parseInt(req.getParameter("tempoSolucao")));
             s.setPrioridade(req.getParameter("prioridade"));
             s.setCriticidade(req.getParameter("criticidade"));
+
             Integer idResp = null;
             Integer idTipo = null;
-            try { idResp = Integer.parseInt(req.getParameter("idResponsavel")); } catch (Exception ex) {}
-            try { idTipo = Integer.parseInt(req.getParameter("idTipoServico")); } catch (Exception ex) {}
+
+            try {
+                idResp = Integer.parseInt(req.getParameter("idResponsavel"));
+            } catch (Exception ex) {
+                idResp = null;
+            }
+
+            try {
+                idTipo = Integer.parseInt(req.getParameter("idTipoServico"));
+            } catch (Exception ex) {
+                idTipo = null;
+            }
+
             if (sid == null || sid.isEmpty()) {
                 repo.insert(s, idResp, idTipo);
             } else {
                 s.setId(Integer.parseInt(sid));
                 repo.update(s, idResp, idTipo);
             }
-            resp.sendRedirect(req.getContextPath() + "/sla?action=list");
-        } catch (Exception e) { throw new ServletException(e); }
+
+            // ✅ Após salvar, recarrega a lista e volta à tela principal
+            List<SLA> slas = repo.findAll();
+            req.setAttribute("slas", slas);
+            req.setAttribute("responsaveis", rr.findAll());
+            req.setAttribute("tipos", tr.findAll());
+
+            req.getRequestDispatcher("/WEB-INF/views/sla/list.jsp").forward(req, resp);
+
+        } catch (Exception e) {
+            throw new ServletException(e);
+        }
+    
     }
 }

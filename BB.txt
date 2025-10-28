@@ -1,0 +1,81 @@
+DROP TABLE IF EXISTS sla_responsavel;
+DROP TABLE IF EXISTS sla_tipo_servico;
+DROP TABLE IF EXISTS historico_sla;
+DROP TABLE IF EXISTS violacao;
+DROP TABLE IF EXISTS atendimento;
+DROP TABLE IF EXISTS responsavel;
+DROP TABLE IF EXISTS tipo_servico;
+DROP TABLE IF EXISTS sla;
+
+------------------------------------------------
+-- TABELAS PRINCIPAIS
+------------------------------------------------
+
+CREATE TABLE tipo_servico (
+  id_servico INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(100) NOT NULL,
+  descricao VARCHAR(255)
+);
+
+CREATE TABLE sla (
+  id_sla INT AUTO_INCREMENT PRIMARY KEY,
+  tempo_resposta INT NOT NULL,
+  tempo_solucao INT NOT NULL,
+  criticidade VARCHAR(30),
+  prioridade VARCHAR(30)
+);
+
+CREATE TABLE responsavel (
+  id_responsavel INT AUTO_INCREMENT PRIMARY KEY,
+  nome VARCHAR(150) NOT NULL,
+  cargo VARCHAR(100),
+  contato VARCHAR(150)
+);
+
+CREATE TABLE atendimento (
+  id_atendimento INT AUTO_INCREMENT PRIMARY KEY,
+  data_solicitacao TIMESTAMP NOT NULL,
+  status VARCHAR(50),
+  id_sla INT,
+  id_responsavel INT,
+  CONSTRAINT fk_atendimento_sla FOREIGN KEY (id_sla) REFERENCES sla(id_sla) ON DELETE SET NULL,
+  CONSTRAINT fk_atendimento_responsavel FOREIGN KEY (id_responsavel) REFERENCES responsavel(id_responsavel) ON DELETE SET NULL
+);
+
+CREATE TABLE violacao (
+  id_violacao INT AUTO_INCREMENT PRIMARY KEY,
+  data_ocorrencia TIMESTAMP NOT NULL,
+  justificativa VARCHAR(500),
+  acao_corretiva VARCHAR(500),
+  id_sla INT,
+  CONSTRAINT fk_violacao_sla FOREIGN KEY (id_sla) REFERENCES sla(id_sla) ON DELETE CASCADE
+);
+
+CREATE TABLE historico_sla (
+  id_historico_sla INT AUTO_INCREMENT PRIMARY KEY,
+  data_aplicacao TIMESTAMP NOT NULL,
+  status_cumprimento VARCHAR(50),
+  observacao VARCHAR(500),
+  id_sla INT,
+  CONSTRAINT fk_historico_sla_sla FOREIGN KEY (id_sla) REFERENCES sla(id_sla) ON DELETE CASCADE
+);
+
+------------------------------------------------
+-- RELACIONAMENTOS N:N
+------------------------------------------------
+
+CREATE TABLE sla_tipo_servico (
+  id_sla INT NOT NULL,
+  id_servico INT NOT NULL,
+  PRIMARY KEY (id_sla, id_servico),
+  CONSTRAINT fk_sla_tipo_sla FOREIGN KEY (id_sla) REFERENCES sla(id_sla) ON DELETE CASCADE,
+  CONSTRAINT fk_sla_tipo_servico FOREIGN KEY (id_servico) REFERENCES tipo_servico(id_servico) ON DELETE CASCADE
+);
+
+CREATE TABLE sla_responsavel (
+  id_sla INT NOT NULL,
+  id_responsavel INT NOT NULL,
+  PRIMARY KEY (id_sla, id_responsavel),
+  CONSTRAINT fk_sla_resp_sla FOREIGN KEY (id_sla) REFERENCES sla(id_sla) ON DELETE CASCADE,
+  CONSTRAINT fk_sla_resp_responsavel FOREIGN KEY (id_responsavel) REFERENCES responsavel(id_responsavel) ON DELETE CASCADE
+);

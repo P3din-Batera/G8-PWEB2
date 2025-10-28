@@ -30,4 +30,5 @@ public class SLA {
 
     public String getNomeTipo() { return nomeTipo; }
     public void setNomeTipo(String nomeTipo) { this.nomeTipo = nomeTipo; }
+    
 }
